@@ -14,7 +14,8 @@ namespace Sender.Services
 
         public async Task SendMessageAsync<T>(T ServiceBusMessage, string QueueName)
         {
-            var QueueClient = new QueueClient(this.config.GetConnectionString("AzureServiceBus"), QueueName);
+            var AzureServiceBus = this.config.GetConnectionString("AzureServiceBus");
+            var QueueClient = new QueueClient(AzureServiceBus, QueueName);
             string MessageBody = JsonSerializer.Serialize(ServiceBusMessage);
             var Message = new Message(Encoding.UTF8.GetBytes(MessageBody));
             await QueueClient.SendAsync(Message);
